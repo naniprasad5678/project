@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOLMSystems Dashboard</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(145deg, #0a1930, #0e2450);
+      color: #fff;
+    }
+
+    header {
+      background: linear-gradient(90deg, #0e3a6f, #0b2a4d);
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header h1 {
+      font-size: 22px;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #56ccf2;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    section {
+      display: none;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    button {
+      background: #1e90ff;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #63b3ed;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: none;
+      background: #1a2c4a;
+      color: white;
+    }
+
+    .card {
+      background: #13233e;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .profile-box {
+      background: #142d4c;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    .profile-box img {
+      width: 90px;
+      border-radius: 50%;
+      display: block;
+      margin: 10px auto;
+    }
+
+    .profile-box h3 {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .profile-box p {
+      text-align: center;
+      color: #b0b0b0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 13px;
+      color: #aaa;
+      border-top: 1px solid #123;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>VOLMSystems Dashboard</h1>
+    <nav>
+      <a href="#" onclick="showPage('loginPage')">Login</a>
+      <a href="#" onclick="showPage('eventsPage')">Events</a>
+      <a href="#" onclick="showPage('profilePage')">Profile</a>
+      <a href="#" onclick="showPage('tasksPage')">Tasks</a>
+      <a href="#" onclick="showPage('reportsPage')">Reports</a>
+      <a href="#" onclick="showPage('notificationsPage')">Notifications</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <!-- LOGIN PAGE -->
+    <section id="loginPage" class="active">
+      <h2>Login / Register</h2>
+      <div class="card">
+        <input type="email" id="loginEmail" placeholder="Email" />
+        <input type="password" id="loginPassword" placeholder="Password" />
+        <button onclick="loginUser()">Login</button>
+        <p>Don't have an account? <button onclick="registerUser()">Register</button></p>
+      </div>
+    </section>
+
+    <!-- EVENTS PAGE -->
+    <section id="eventsPage">
+      <h2>Events</h2>
+      <div id="eventList" class="grid"></div>
+      <div class="card">
+        <h3>Create New Event</h3>
+        <input type="text" id="eventTitle" placeholder="Event Title" />
+        <textarea id="eventDesc" placeholder="Description"></textarea>
+        <button onclick="createEvent()">Add Event</button>
+      </div>
+    </section>
+
+    <!-- PROFILE PAGE -->
+    <section id="profilePage">
+      <h2>Your Profile</h2>
+      <div class="profile-box">
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile" />
+        <h3 id="profileName">Name</h3>
+        <p id="profileEmail">email@example.com</p>
+        <button onclick="enableProfileEdit()">Edit Profile</button>
+
+        <div id="profileEditSection" style="display:none;">
+          <input id="updateName" placeholder="Update Name" />
+          <input id="updateEmail" placeholder="Update Email" />
+          <button onclick="updateProfile()">Save Changes</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TASKS PAGE -->
+    <section id="tasksPage">
+      <h2>Task Assignments & Feedback</h2>
+      <div class="card">
+        <h3>Assigned Tasks</h3>
+        <div id="taskList"></div>
+      </div>
+      <div class="card">
+        <h3>Give Feedback</h3>
+        <textarea id="feedbackText" placeholder="Your feedback..."></textarea>
+        <button onclick="submitFeedback()">Submit</button>
+      </div>
+    </section>
+
+    <!-- REPORTS PAGE -->
+    <section id="reportsPage">
+      <h2>Reports</h2>
+      <div class="card">
+        <button onclick="generateReport()">Generate Summary Report</button>
+        <pre id="reportOutput"></pre>
+      </div>
+    </section>
+
+    <!-- NOTIFICATIONS PAGE -->
+    <section id="notificationsPage">
+      <h2>Notifications</h2>
+      <div id="notificationsList" class="card"></div>
+    </section>
+  </div>
+
+  <footer>
+    VOLMSystems © 2025 | Designed by Naniprasad
+  </footer>
+
+  <script>
+    function showPage(id) {
+      document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    function loginUser() {
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      alert("Login simulated — connect to backend API here.");
+      showPage('eventsPage');
+    }
+
+    function registerUser() {
+      alert("Registration simulated — connect to backend API here.");
+    }
+
+    const eventList = document.getElementById("eventList");
+    function createEvent() {
+      const title = document.getElementById("eventTitle").value.trim();
+      const desc = document.getElementById("eventDesc").value.trim();
+      if (!title || !desc) {
+        alert("Please fill in all fields.");
+        return;
+      }
+      const eventCard = document.createElement("div");
+      eventCard.className = "card";
+      eventCard.innerHTML = `
+        <h3>${title}</h3>
+        <p>${desc}</p>
+        <button onclick="markAttendance(this)">Mark Attendance</button>
+      `;
+      eventList.appendChild(eventCard);
+    }
+
+    function markAttendance(btn) {
+      btn.innerText = "✅ Attendance Marked";
+      btn.disabled = true;
+    }
+
+    function enableProfileEdit() {
+      document.getElementById("profileEditSection").style.display = "block";
+    }
+
+    function updateProfile() {
+      const name = document.getElementById("updateName").value.trim();
+      const email = document.getElementById("updateEmail").value.trim();
+      if (name) document.getElementById("profileName").innerText = name;
+      if (email) document.getElementById("profileEmail").innerText = email;
+      document.getElementById("profileEditSection").style.display = "none";
+      alert("Profile updated locally — connect backend API here.");
+    }
+
+    function submitFeedback() {
+      const feedback = document.getElementById("feedbackText").value;
+      alert("Feedback submitted (simulated).");
+    }
+
+    function generateReport() {
+      const report = { totalEvents: 5, attended: 3, feedbacks: 2 };
+      document.getElementById("reportOutput").innerText = JSON.stringify(report, null, 2);
+    }
+
+    function loadNotifications() {
+      const data = [
+        "New event added: Beach Cleanup",
+        "Task reminder: Submit feedback",
+      ];
+      const list = document.getElementById("notificationsList");
+      list.innerHTML = data.map(n => `<p>🔔 ${n}</p>`).join("");
+    }
+
+    loadNotifications();
+  </script>
+</body>
+</html>
